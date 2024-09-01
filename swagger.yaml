@@ -1,0 +1,247 @@
+swagger: '2.0'
+info:
+  description: CRUD de Produtos
+  version: 1.0.0
+  title: Documentação da Api
+  contact:
+    name: Ellen Conrado
+    url: https://github.com/EllenConrado/CRUD-de-Produtos
+    email: ellenc.conrado@gmail.com
+host: localhost:9999
+basePath: /
+tags:
+  - name: product-controller
+    description: Product Controller
+paths:
+  /products:
+    get:
+      tags:
+        - product-controller
+      summary: lista
+      operationId: listaUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductDto'
+        '400':
+          description: Bad Request!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '500':
+          description: Internal Server Error!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+    post:
+      tags:
+        - product-controller
+      summary: cadastrar
+      operationId: cadastrarUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: form
+          description: form
+          required: true
+          schema:
+            $ref: '#/definitions/ProductForm'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProductDto'
+        '400':
+          description: Bad Request!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+  /products/search:
+    get:
+      tags:
+        - product-controller
+      summary: filtro
+      operationId: filtroUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: max_price
+          in: query
+          description: max_price
+          required: false
+          type: string
+        - name: min_price
+          in: query
+          description: min_price
+          required: false
+          type: string
+        - name: q
+          in: query
+          description: q
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductDto'
+        '400':
+          description: Bad Request!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '500':
+          description: Internal Server Error!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+  /products/{id}:
+    get:
+      tags:
+        - product-controller
+      summary: detalhar
+      operationId: detalharUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProductDto'
+        '400':
+          description: Bad Request!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '500':
+          description: Internal Server Error!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+    put:
+      tags:
+        - product-controller
+      summary: atualizar
+      operationId: atualizarUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: form
+          description: form
+          required: true
+          schema:
+            $ref: '#/definitions/ProductForm'
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ProductDto'
+        '400':
+          description: Bad Request!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '404':
+          description: Not Found!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+        '500':
+          description: Internal Server Error!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+    delete:
+      tags:
+        - product-controller
+      summary: remover
+      operationId: removerUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '404':
+          description: Not Found!
+          schema:
+            $ref: '#/definitions/ExceptionResponse'
+      deprecated: false
+definitions:
+  ProductDto:
+    type: object
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      price:
+        type: number
+    title: ProductDto
+  ProductForm:
+    type: object
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    title: ProductForm
+  ExceptionResponse:
+    type: object
+    properties:
+      status_code:
+        type: integer
+        format: int64
+      message:
+        type: string
+    title: ExceptionResponse
